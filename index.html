@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terrassenbau-Guide – Naturstein & Keramik</title>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  :root {
+    --bg: #f8fafc;
+    --surface: #ffffff;
+    --border: #e2e8f0;
+    --text: #0f172a;
+    --text-muted: #64748b;
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --green: #059669;
+    --green-light: #d1fae5;
+    --amber: #d97706;
+    --amber-light: #fef3c7;
+    --purple: #7c3aed;
+    --purple-light: #ede9fe;
+    --rose: #e11d48;
+    --rose-light: #ffe4e6;
+    --radius: 12px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-hover: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 50%, #3b82f6 100%);
+    color: #fff;
+    padding: 48px 24px 40px;
+    text-align: center;
+  }
+  .hero h1 { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; }
+  .hero p { margin-top: 8px; font-size: 0.95rem; opacity: 0.88; max-width: 600px; margin-left: auto; margin-right: auto; }
+  .hero .badge-row { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .hero .badge {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(4px);
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 500;
+  }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 880px; margin: 0 auto; padding: 0 16px; }
+  .toc {
+    background: var(--surface);
+    margin: 24px auto;
+    padding: 20px 24px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+  .toc h2 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 12px; }
+  .toc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap: 6px; }
+  .toc-grid a {
+    font-size: 0.85rem; color: var(--accent); text-decoration: none;
+    display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 6px;
+    transition: background 0.15s;
+  }
+  .toc-grid a:hover { background: var(--accent-light); }
+  .toc-grid a .toc-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 20px; height: 20px; border-radius: 50%; background: var(--accent-light);
+    color: var(--accent); font-size: 0.7rem; font-weight: 600; flex-shrink: 0;
+  }
+
+  /* ── PHASE ── */
+  .phase { margin: 28px 0; }
+  .phase-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 20px; border-radius: var(--radius); border: 1px solid var(--border);
+    background: var(--surface); box-shadow: var(--shadow); cursor: pointer;
+    user-select: none; transition: box-shadow 0.15s;
+  }
+  .phase-header:hover { box-shadow: var(--shadow-hover); }
+  .phase-header .icon-svg {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .phase-header .icon-svg svg { width: 20px; height: 20px; }
+  .phase-header .phase-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
+  .phase-header h3 { font-size: 1rem; font-weight: 600; }
+  .phase-header .toggle-icon { margin-left: auto; transition: transform 0.2s; color: var(--text-muted); }
+  .phase-header.open .toggle-icon { transform: rotate(180deg); }
+  .phase-body { display: none; padding: 20px; border: 1px solid var(--border); border-top: 0; border-radius: 0 0 var(--radius) var(--radius); background: var(--surface); }
+  .phase-header.open + .phase-body { display: block; }
+
+  .step { display: flex; gap: 12px; margin-bottom: 16px; }
+  .step:last-child { margin-bottom: 0; }
+  .step-num {
+    flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.72rem; font-weight: 700; color: #fff; margin-top: 2px;
+  }
+  .step-content { flex: 1; min-width: 0; }
+  .step-content strong { display: block; font-size: 0.88rem; margin-bottom: 2px; }
+  .step-content p { font-size: 0.83rem; color: var(--text-muted); line-height: 1.55; }
+  .step-content ul { margin-top: 4px; padding-left: 16px; }
+  .step-content ul li { font-size: 0.83rem; color: var(--text-muted); margin-bottom: 2px; }
+
+  /* ── COLOR THEMES ── */
+  .ic-blue { background: var(--accent-light); color: var(--accent); }
+  .ic-green { background: var(--green-light); color: var(--green); }
+  .ic-amber { background: var(--amber-light); color: var(--amber); }
+  .ic-purple { background: var(--purple-light); color: var(--purple); }
+  .ic-rose { background: var(--rose-light); color: var(--rose); }
+  .num-blue { background: var(--accent); }
+  .num-green { background: var(--green); }
+  .num-amber { background: var(--amber); }
+  .num-purple { background: var(--purple); }
+  .num-rose { background: var(--rose); }
+  .badge-blue { background: var(--accent-light); color: var(--accent); }
+  .badge-green { background: var(--green-light); color: var(--green); }
+  .badge-amber { background: var(--amber-light); color: var(--amber); }
+  .badge-purple { background: var(--purple-light); color: var(--purple); }
+
+  /* ── TABLE ── */
+  .table-wrap { overflow-x: auto; margin-top: 12px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  th, td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+  th { background: var(--bg); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); }
+  td { vertical-align: top; color: var(--text); }
+
+  /* ── TOOLS ── */
+  .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px,1fr)); gap: 8px; margin-top: 12px; }
+  .tool-item {
+    display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+    border: 1px solid var(--border); border-radius: 8px; font-size: 0.82rem;
+    transition: background 0.15s;
+  }
+  .tool-item:hover { background: var(--bg); }
+  .tool-item svg { width: 16px; height: 16px; flex-shrink: 0; color: var(--accent); }
+
+  /* ── COLLAPSIBLE ── */
+  .variant-toggle {
+    margin: 12px 0 4px; display: inline-flex; align-items: center; gap: 6px;
+    font-size: 0.82rem; font-weight: 600; color: var(--accent); cursor: pointer; user-select: none;
+  }
+  .variant-toggle:hover { text-decoration: underline; }
+
+  /* ── COST TABLE ── */
+  .cost-total { background: var(--accent-light); font-weight: 700; color: var(--accent); }
+
+  /* ── FOOTER ── */
+  .footer { text-align: center; padding: 32px 16px; color: var(--text-muted); font-size: 0.78rem; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .hero h1 { font-size: 1.4rem; }
+    .toc-grid { grid-template-columns: 1fr; }
+    .tools-grid { grid-template-columns: repeat(auto-fill, minmax(140px,1fr)); }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>🏗️ Terrassenbau-Guide</h1>
+  <p>Schritt-für-Schritt: Natursteinplatten, Keramik-Verbund &amp; Unterkonstruktion – gebundene und ungebundene Bauweise.</p>
+  <div class="badge-row">
+    <span class="badge">3 Bauweisen</span>
+    <span class="badge">37 Arbeitsschritte</span>
+    <span class="badge">Naturstein · Keramik</span>
+    <span class="badge">Splittbett · Drainagebeton</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- TOC -->
+<div class="toc">
+  <h2>📋 Phasen</h2>
+  <div class="toc-grid">
+    <a href="#p1"><span class="toc-num">1</span> Planung &amp; Abstecken</a>
+    <a href="#p2"><span class="toc-num">2</span> Aushub &amp; Rückbau</a>
+    <a href="#p3"><span class="toc-num">3</span> Tragschicht</a>
+    <a href="#p4"><span class="toc-num">4</span> Ausgleichsschicht</a>
+    <a href="#p5"><span class="toc-num">5</span> Platten verlegen</a>
+    <a href="#p6"><span class="toc-num">6</span> Zuschneiden</a>
+    <a href="#p7"><span class="toc-num">7</span> Verfugen</a>
+    <a href="#p8"><span class="toc-num">8</span> Imprägnierung</a>
+    <a href="#p9"><span class="toc-num">9</span> Blockstufen</a>
+    <a href="#material"><span class="toc-num">M</span> Materialvergleich</a>
+    <a href="#cost"><span class="toc-num">€</span> Kosten</a>
+    <a href="#tools"><span class="toc-num">T</span> Werkzeug</a>
+  </div>
+</div>
+
+<!-- PHASE 1 -->
+<div class="phase" id="p1">
+  <div class="phase-header open" onclick="toggle(this)">
+    <div class="icon-svg ic-blue"><i data-lucide="map-pin"></i></div>
+    <div><div class="phase-label badge-blue">Phase 1</div><h3>Planung &amp; Abstecken</h3></div>
+    <i data-lucide="chevron-down" class="toggle-icon"></i>
+  </div>
+  <div class="phase-body">
+    <div class="step">
+      <div class="step-num num-blue">1</div>
+      <div class="step-content">
+        <strong>Standort &amp; Fixpunkte prüfen</strong>
+        <p>Lichtschächte, Fensterbänke und Tür-Eingänge sind in Stein gemeißelt – sie geben die Höhenreferenz vor. Ausrichtung und Gefälle werden von diesen Fixpunkten abgeleitet.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num num-blue">2</div>
+      <div class="step-content">
+        <strong>Grobabsteckung mit Schnurgerüst</strong>
+        <p>Fläche mit Holzpflöcken abstecken, Schnur spannen (Knoten: Gestochener Mastwurf). Pflöcke <em>weiter</em> als die Fläche setzen – sonst werden sie beim Aushub entfernt. An jeder Ecke zwei Pflöcke für rechtwinklige Orientierung.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num num-blue">3</div>
+      <div class="step-content">
+        <strong>Feine Absteckung (Höhen)</strong>
+        <p>Die Schnur gibt ab jetzt die exakte Höhe des Obermaterials vor. Finale Höhe am ersten Pfosten markieren, mit der Wasserwaage auf den zweiten Pfosten übertragen. Zu zweit arbeiten.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num num-blue">4</div>
+      <div class="step-content">
+        <strong>Gefälle: 1,5–2 % vom Haus weg</strong>
+        <p>1,5–2 cm pro Meter. Die Diagonale prüfen: gleiche Länge = 100 % rechtwinklig. Bei glatten Keramikplatten reichen 1,5 %.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num num-blue">5</div>
+      <div class="step-content">
+        <strong>Aushubtiefe prüfen</strong>
+        <p>Anhand der Schnur prüfen, ob genug Platz für Tragschicht + Ausgleich + Belag ist. Der Untergrund muss <em>jetzt schon</em> das gleiche Gefälle haben.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 2 -->
+<div class="phase" id="p2">
+  <div class="phase-header open" onclick="toggle(this)">
+    <div class="icon-svg ic-green"><i data-lucide="excavator"></i></div>
+    <div><div class="phase-label badge-green">Phase 2</div><h3>Aushub &amp; Rückbau</h3></div>
+    <i data-lucide="chevron-down" class="toggle-icon"></i>
+  </div>
+  <div class="phase-body">
+    <div class="step">
+      <div class="step-num num-green">6</div>
+      <div class="step-content">
+        <strong>Aushubtiefe: 30–35 cm anstreben</strong>
+        <p>20–25 cm Schotter + 4 cm Ausgleich + 5 cm Plattenstärke. Weniger als 30 cm ist das absolute Minimum. Falls organisches Material (Mutterboden) vorhanden ist, tiefer gehen.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num num-green">7</div>
+      <div class="step-content">
+        <strong>Fläche 10–20 cm breiter ausheben</strong>
+        <p>Platz für Randsteine, Betonrückstützen oder Pflasterfugenband.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num num-green">8</div>
+      <div class="step-content">
+        <strong>Wurzeln entfernen (falls vorhanden)</strong>
+        <p>Baumwurzeln in der Tragschicht führen später zu Absackungen, wenn sie absterben. Komplett rausziehen.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num num-green">9</div>
+      <div class="step-content">
+        <strong>Untergrund verdichten</strong>
+        <p>Mit Rüttelplatte abrütteln – im exakten Gefälle der späteren Oberfläche.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num num-green">10</div>
+      <div class="step-content">
+        <strong>Wurzelsperre (optional, bei Bäumen)</strong>
+        <p>Tiefbord in 10 cm Beton setzen, 50 cm tief. Verhindert erneute Durchwurzelung.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 3 -->
+<div class="phase" id="p3">
+  <div class="phase-header open" onclick="toggle(this)">
+    <div class="icon-svg ic-amber"><i data-lucide="layers"></i></div>
+    <div><div class="phase-label badge-amber">Phase 3</div><h3>Tragschicht (Schotter)</h3></div>
+    <i data-lucide="chevron-down" class="toggle-icon"></i>
+  </div>
+  <div class="phase-body">
+    <div class="step">
+      <div class="step-num num-amber">11</div>
+      <div class="step-content">
+        <strong>Schotter: Körnung 0/45 oder 0/32 mm</strong>
+        <p>Regional verfügbar wählen. Bei Bedarf wasserdurchlässige Mischungen (z. B. 5/45 mm).</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num num-amber">12</div>
+      <div class="step-content">
+        <strong>Schotter einbringen – ca. 20 cm</strong>
+        <p>Bei leichter Rüttelplatte (120 kg) in 2 Lagen à 10 cm einbringen, jede separat verdichten.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num num-amber">13</div>
+      <div class="step-content">
+        <strong>Vor dem Rütteln nässen</strong>
+        <p>Mit Gartenschlauch oberflächlich anfeuchten – feuchtes Material verdichtet sich deutlich besser.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num num-amber">14</div>
+      <div class="step-content">
+        <strong>Rüttelplatte + Handstampfer</strong>
+        <p>Gleichmäßig abrütteln, Randbereiche mit dem Handstampfer verdichten. Regelmäßig Höhe und Gefälle prüfen.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num num-amber">15</div>
+      <div class="step-content">
+        <strong>Gefälle in der Tragschicht: mind. 1,5 %</strong>
+        <p>Wasser, das durch Fugen und Ausgleich sickert, muss auf der Tragschicht abfließen können. Frostschäden vermeiden!</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 4 -->
+<div class="phase" id="p4">
+  <div class="phase-header open" onclick="toggle(this)">
+    <div class="icon-svg ic-purple"><i data-lucide="ruler"></i></div>
+    <div><div class="phase-label badge-purple">Phase 4</div><h3>Ausgleichsschicht / Unterkonstruktion</h3></div>
+    <i data-lucide="chevron-down" class="toggle-icon"></i>
+  </div>
+  <div class="phase-body">
+    <div class="step">
+      <div class="step-num num-purple">16</div>
+      <div class="step-content">
+        <strong>Ausgleichsschicht aus Splitt (ungebunden) – 4 cm</strong>
+        <p>Material: Basaltsplitt 5–8 mm, hochgradig wasserdurchlässig und kapillarbrechend. 4 cm im verdichteten Zustand. Das Gefälle der Tragschicht überträgt sich automatisch.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num num-purple">17</div>
+      <div class="step-content">
+        <strong>Variante: Drainagebeton (gebunden) – 8–10 cm</strong>
+        <p>Für Naturstein in fester Verlegung. Drainagebeton ausbringen, jede Platte bekommt ein individuelles Bett – kein vollflächiges Abziehen.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num num-purple">18</div>
+      <div class="step-content">
+        <strong>Abziehen mit Schienen + Richtscheit</strong>
+        <p>Nivellierschienen unter die Schnur legen, Höhe mit Gummihammer korrigieren. Mit Richtscheit abziehen. Löcher nachfüllen, Schienenrillen nach Entfernen verschließen.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num num-purple">19</div>
+      <div class="step-content">
+        <strong>Kantensteine / Einfassung (optional)</strong>
+        <p>Geben die exakte Endhöhe vor. Ohne Kantensteine gilt die Schnur.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 5 -->
+<div class="phase" id="p5">
+  <div class="phase-header open" onclick="toggle(this)">
+    <div class="icon-svg ic-green"><i data-lucide="grid-3x3"></i></div>
+    <div><div class="phase-label badge-green">Phase 5</div><h3>Platten verlegen</h3></div>
+    <i data-lucide="chevron-down" class="toggle-icon"></i>
+  </div>
+  <div class="phase-body">
+    <div class="step">
+      <div class="step-num num-green">20</div>
+      <div class="step-content">
+        <strong>Materialwahl</strong>
+        <p>Natursteinplatten, Betonplatten oder Keramik-Verbund (Beton Plus: 2 cm Keramik + 3 cm Beton = 5 cm). Keramik bis 2 cm <strong>nur feste Verlegung</strong>; Beton Plus ab 5 cm auch lose.</p>
+        <ul>
+          <li>Keramik: R11-Rutschhemmung, frost-/tausalzbeständig, kein Porenvolumen → kaum Moos/Flechten, extrem kratzfest, fleckenresistent</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="margin: 16px 0 8px;"><strong style="font-size:0.88rem;">▶ Ungebundene Bauweise (Splittbett)</strong></div>
+    <div class="step">
+      <div class="step-num num-green">21</div>
+      <div class="step-content">
+        <strong>Fugenkeile / Abstandshalter einsetzen</strong>
+        <p>Fugenbreite einheitlich wählen (z. B. 5 mm). Fugenkreuze für gleichmäßige Abstände.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num num-green">22</div>
+      <div class="step-content">
+        <strong>Platte für Platte setzen</strong>
+        <p>Platte in die Bettung ablassen. Mit großem Simplex (Schonhammer) anschlagen – jede Platte festklopfen, wie Abrütteln einer Pflasterfläche. Wasserwaage und lange Latte für Gefälle &amp; Flucht. Aus der Distanz prüfen.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num num-green">23</div>
+      <div class="step-content">
+        <strong>Geräte für Handhabung</strong>
+        <p>Vakuumsauger für große Platten. Zu zweit auch von Hand möglich. Vakuumheber empfohlen für Platten ab 5 cm.</p>
+      </div>
+    </div>
+
+    <div style="margin: 16px 0 8px;"><strong style="font-size:0.88rem;">▶ Gebundene Bauweise (Drainagebeton + Kleber)</strong></div>
+    <div class="step">
+      <div class="step-num num-green">24</div>
+      <div class="step-content">
+        <strong>Kleber anmischen: Trasszement + Haftemulsion</strong>
+        <p>25 kg Trasszement + 1,5 l Haftemulsion (Bonding Agent) + Wasser zu streichfähiger Konsistenz. Günstig und hält genauso gut wie teure Spezialkleber.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num num-green">25</div>
+      <div class="step-content">
+        <strong>Plattenunterseite bestreichen &amp; frisch-in-frisch verlegen</strong>
+        <p>Vollbett auf der Plattenunterseite. Platte in den frischen Drainagebeton setzen – der Kleber verbindet sich mit dem Beton zu einer festen Einheit.</p>
+      </div>
+    </div>
+
+    <div style="margin: 16px 0 8px;"><strong style="font-size:0.88rem;">▶ Randabschluss</strong></div>
+    <div class="step">
+      <div class="step-num num-green">26</div>
+      <div class="step-content">
+        <strong>Pflasterfugenband am Gebäude</strong>
+        <p>Ermöglicht spätere feste Verfugung oder dient als Bewegungsfuge. Alternativ: Randdämmstreifen / Estrichband.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 6 -->
+<div class="phase" id="p6">
+  <div class="phase-header open" onclick="toggle(this)">
+    <div class="icon-svg ic-rose"><i data-lucide="scissors"></i></div>
+    <div><div class="phase-label badge-rose">Phase 6</div><h3>Platten zuschneiden</h3></div>
+    <i data-lucide="chevron-down" class="toggle-icon"></i>
+  </div>
+  <div class="phase-body">
+    <div class="step">
+      <div class="step-num num-rose">27</div>
+      <div class="step-content">
+        <strong>Schnittlinie anzeichnen</strong>
+        <p>Mit Kreide oder Bleistift – der Strich ist die spätere Kante.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num num-rose">28</div>
+      <div class="step-content">
+        <strong>Trockener Führungsschnitt (Anriss)</strong>
+        <p>Oberflächlich entlang der Linie schneiden – als Führungskante. Bei Keramik: Keramikblatt verwenden (verhindert Ausplatzungen). Atemschutzmaske tragen.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num num-rose">29</div>
+      <div class="step-content">
+        <strong>Nasstrennschnitt durch volle Dicke</strong>
+        <p>Mit Wasserzufuhr oder Absaugung. Nie volle Dicke in einem Durchgang.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num num-rose">30</div>
+      <div class="step-content">
+        <strong>Kanten nachbearbeiten (bei Ausplatzungen)</strong>
+        <p>Schleifpads – kleinste und gröbere Abplatzungen komplett wegschleifen, sodass sie nicht mehr auffallen.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 7 -->
+<div class="phase" id="p7">
+  <div class="phase-header open" onclick="toggle(this)">
+    <div class="icon-svg ic-purple"><i data-lucide="container"></i></div>
+    <div><div class="phase-label badge-purple">Phase 7</div><h3>Verfugen</h3></div>
+    <i data-lucide="chevron-down" class="toggle-icon"></i>
+  </div>
+  <div class="phase-body">
+    <div class="step">
+      <div class="step-num num-purple">31</div>
+      <div class="step-content">
+        <strong>Ungebundene Verfugung (Fugensplitt 2–5 mm)</strong>
+        <p>Für lose verlegte Platten. Dunkler Splitt bei hellen Platten → Kontrast zeichnet einen Rahmen. Einfach einkehren, abkehren, nach einiger Zeit nachkehren.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num num-purple">32</div>
+      <div class="step-content">
+        <strong>Gebundene Verfugung (2K-Epoxidharz)</strong>
+        <p>Für fest verlegte Platten. Platten <strong>müssen extrem sauber und staubfrei</strong> sein – Epoxidharz bindet jeden Schmutz ein. 24 h vor Regen schützen (Plane).</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num num-purple">33</div>
+      <div class="step-content">
+        <strong>Elastische Dehnungsfuge (unkrautfrei, rissfrei)</strong>
+        <p>Bei lose verlegten Platten: Dehnungsfugen-Material (z. B. VDW 885 Plus, <strong>kein normales Silikon</strong>). Fugenmaterial raussaugen oder Rundschnur einlegen. Mit Abstreusand bestreuen. Elastisch → nie Risse, kein Unkraut.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num num-purple">34</div>
+      <div class="step-content">
+        <strong>Option: 1K-Fugenmörtel nach 1 Jahr</strong>
+        <p>Bei Beton Plus (≥ 5 cm) möglich, aber erst nach 1 Jahr Setzungsphase. Weichen 1K-Mörtel nehmen (kein 2K, der reißt bei Bewegung).</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 8 -->
+<div class="phase" id="p8">
+  <div class="phase-header open" onclick="toggle(this)">
+    <div class="icon-svg ic-amber"><i data-lucide="droplets"></i></div>
+    <div><div class="phase-label badge-amber">Phase 8</div><h3>Imprägnierung (nur Naturstein)</h3></div>
+    <i data-lucide="chevron-down" class="toggle-icon"></i>
+  </div>
+  <div class="phase-body">
+    <div class="step">
+      <div class="step-num num-amber">35</div>
+      <div class="step-content">
+        <strong>2–4 Wochen warten</strong>
+        <p>Fugenmörtel muss vollständig ausgehärtet sein. Keramik benötigt keine Imprägnierung (geschlossene Oberfläche).</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num num-amber">36</div>
+      <div class="step-content">
+        <strong>Gründlich reinigen</strong>
+        <p>Laubbläser → Wasser + harte Bürste → nochmals Laubbläser. Alles was auf der Platte liegt, wird durch die Imprägnierung dauerhaft eingebunden.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num num-amber">37</div>
+      <div class="step-content">
+        <strong>Mit Drucksprüher auftragen (100–200 ml/m²)</strong>
+        <p>4 h Regenschutz einplanen. Haltbarkeit: 2–3 Jahre – kein dauerhafter Schutz. Natürlicher Look vs. Schutz abwägen.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 9 -->
+<div class="phase" id="p9">
+  <div class="phase-header open" onclick="toggle(this)">
+    <div class="icon-svg ic-blue"><i data-lucide="staircase"></i></div>
+    <div><div class="phase-label badge-blue">Phase 9</div><h3>Blockstufen &amp; Einfassung</h3></div>
+    <i data-lucide="chevron-down" class="toggle-icon"></i>
+  </div>
+  <div class="phase-body">
+    <div class="step">
+      <div class="step-num num-blue">38</div>
+      <div class="step-content">
+        <strong>Stufen in Trasszement-Beton setzen (15 cm)</strong>
+        <p>Verhindert Ausblühungen (weisse Kalkränder). Bündig zur Terrassenoberfläche ausrichten.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num num-blue">39</div>
+      <div class="step-content">
+        <strong>Ein Material – ruhige Optik</strong>
+        <p>Terrassenplatten, Stufen und Einfassung aus demselben Material ergibt eine elegante, ruhige Gesamtoptik.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MATERIALVERGLEICH -->
+<div class="phase" id="material">
+  <div class="phase-header open" onclick="toggle(this)">
+    <div class="icon-svg ic-amber"><i data-lucide="shuffle"></i></div>
+    <div><div class="phase-label badge-amber">Material</div><h3>Materialvergleich</h3></div>
+    <i data-lucide="chevron-down" class="toggle-icon"></i>
+  </div>
+  <div class="phase-body">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Eigenschaft</th><th>Naturstein (Basalt)</th><th>Keramik-Verbund (Beton Plus)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Stärke</td><td>2–4 cm</td><td>5 cm (2 cm Keramik + 3 cm Beton)</td></tr>
+          <tr><td>Rutschhemmung</td><td>variabel</td><td>R11 (über Norm)</td></tr>
+          <tr><td>Wasseraufnahme</td><td>gering, offenporig</td><td>0 % (kein Porenvolumen)</td></tr>
+          <tr><td>Frost-/Tausalz</td><td>sehr gut (Basalt)</td><td>extrem gut</td></tr>
+          <tr><td>Flecken</td><td>mittel (zieht ein)</td><td>sehr gering (abwischbar)</td></tr>
+          <tr><td>Moos / Flechten</td><td>möglich</td><td>kaum (keine Haftgrundlage)</td></tr>
+          <tr><td>Kratzfestigkeit</td><td>hoch</td><td>extrem hoch (gebrannt)</td></tr>
+          <tr><td>Pflege</td><td>Imprägnierung alle 2–3 J.</td><td>keine Imprägnierung nötig</td></tr>
+          <tr><td>Unkraut in Fugen</td><td>abhängig von Fugenart</td><td>bei Dehnungsfuge: keines</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-wrap" style="margin-top:20px;">
+      <table>
+        <thead>
+          <tr><th>Bauweise</th><th>Schicht 1</th><th>Schicht 2</th><th>Schicht 3</th><th>Belag</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Gebunden</strong></td><td>Frostschutz</td><td>Schotter 0/45 – 20 cm</td><td>Drainagebeton 8–10 cm</td><td>Naturstein 2–4 cm + Trasskleber</td></tr>
+          <tr><td><strong>Ungebunden (Naturstein)</strong></td><td>Frostschutz</td><td>Schotter 0/45 – 20 cm</td><td>Splitt 5–8 mm – 4 cm</td><td>Platten lose</td></tr>
+          <tr><td><strong>Ungebunden (Keramik)</strong></td><td>Frostschutz</td><td>Schotter 0/45 – 20 cm</td><td>Basaltsplitt 5–8 mm – 4 cm</td><td>Beton Plus 5 cm + Fugensplitt</td></tr>
+          <tr style="background:var(--bg);"><td><strong>Gefälle</strong></td><td></td><td>1,5–2 %</td><td>1,5–2 %</td><td>1,5–2 %</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- KOSTEN -->
+<div class="phase" id="cost">
+  <div class="phase-header open" onclick="toggle(this)">
+    <div class="icon-svg ic-rose"><i data-lucide="wallet"></i></div>
+    <div><div class="phase-label badge-rose">Kosten</div><h3>Kostenaufstellung (Referenz 28,1 m²)</h3></div>
+    <i data-lucide="chevron-down" class="toggle-icon"></i>
+  </div>
+  <div class="phase-body">
+    <p style="font-size:0.83rem;color:var(--text-muted);margin-bottom:12px;">Reales Projekt mit Keramik-Verbundplatten Kan Rion, Zementgrau. Alle Preise netto. Kosten variieren je nach örtlichen Gegebenheiten.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Position</th><th>Menge</th><th class="cost-total">Gesamt netto</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Baustelleneinrichtung</td><td>Pauschale</td><td>100–500 €</td></tr>
+          <tr><td>Kantensteine (Wurzelsperre)</td><td>4 St.</td><td>260 €</td></tr>
+          <tr><td>Rückbau alte Fläche (exkl. Entsorgung)</td><td>57 m²</td><td>1.396,50 €</td></tr>
+          <tr><td>Edelstahl-Aufkantung (VA-Blech)</td><td>1 St.</td><td>~200–400 €</td></tr>
+          <tr><td>Terrassenbau: Beton Plus Kan Rion</td><td>28,1 m²</td><td>8.036,60 €</td></tr>
+          <tr><td>Dehnungsfugenband</td><td>13 lfm</td><td>~299 €</td></tr>
+          <tr><td>Baumaschinen-Pauschale</td><td>1</td><td>~300 €</td></tr>
+          <tr><td>Zuschnitt Keramikplatten</td><td>10 lfm</td><td>245 €</td></tr>
+          <tr><td>Fahrtkosten</td><td>Pauschale</td><td>~50 €</td></tr>
+          <tr style="font-weight:700;background:var(--accent-light);"><td><strong>GESAMT (netto)</strong></td><td></td><td><strong>~10.445 €</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:0.8rem;color:var(--text-muted);margin-top:8px;">Plattenmaterial (Kan Rion) ca. 149 €/m². Verlegung in Drainagebeton mit 2-cm-Keramik kostenmäßig fast gleichwertig zu Beton-Plus im Splittbett.</p>
+  </div>
+</div>
+
+<!-- WERKZEUG -->
+<div class="phase" id="tools">
+  <div class="phase-header open" onclick="toggle(this)">
+    <div class="icon-svg ic-blue"><i data-lucide="wrench"></i></div>
+    <div><div class="phase-label badge-blue">Werkzeug</div><h3>Werkzeugliste</h3></div>
+    <i data-lucide="chevron-down" class="toggle-icon"></i>
+  </div>
+  <div class="phase-body">
+    <div class="tools-grid">
+      <div class="tool-item"><i data-lucide="toy-brick"></i> Schnur + Pflöcke</div>
+      <div class="tool-item"><i data-lucide="ruler"></i> Wasserwaage, Maßband</div>
+      <div class="tool-item"><i data-lucide="ruler"></i> Richtscheit + Schienen</div>
+      <div class="tool-item"><i data-lucide="tractor"></i> Rüttelplatte (120 kg)</div>
+      <div class="tool-item"><i data-lucide="shovel"></i> Handstampfer</div>
+      <div class="tool-item"><i data-lucide="hammer"></i> Gummihammer + Simplex</div>
+      <div class="tool-item"><i data-lucide="wind"></i> Vakuumheber/-sauger</div>
+      <div class="tool-item"><i data-lucide="scissors"></i> Flex / Trennschleifer</div>
+      <div class="tool-item"><i data-lucide="droplets"></i> Nasssäge (Wasser)</div>
+      <div class="tool-item"><i data-lucide="circle-dot"></i> Keramikblatt + Betonblatt</div>
+      <div class="tool-item"><i data-lucide="spray-can"></i> Drucksprüher</div>
+      <div class="tool-item"><i data-lucide="wind"></i> Laubbläser</div>
+      <div class="tool-item"><i data-lucide="flower"></i> Fugenkreuze (5 mm)</div>
+      <div class="tool-item"><i data-lucide="spray-can"></i> Silikonpresse</div>
+      <div class="tool-item"><i data-lucide="backpack"></i> Atemschutz (FFP2/FFP3)</div>
+      <div class="tool-item"><i data-lucide="shower-head"></i> Hochdruckreiniger</div>
+      <div class="tool-item"><i data-lucide="tent"></i> Plane (Witterungsschutz)</div>
+      <div class="tool-item"><i data-lucide="gauge"></i> Mischgerät / Rührer</div>
+    </div>
+  </div>
+</div>
+
+<!-- SCHICHTAUFBAU REFERENCE CARD -->
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin:28px 0;">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+    <i data-lucide="layers" style="width:18px;height:18px;color:var(--accent);"></i>
+    <strong style="font-size:0.88rem;">Quick-Reference: Schichtaufbau (von unten)</strong>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:6px;">
+    <span style="background:#f1f5f9;padding:4px 12px;border-radius:6px;font-size:0.8rem;">① Frostschutz</span>
+    <span style="background:#f1f5f9;padding:4px 12px;border-radius:6px;font-size:0.8rem;">② Schotter 0/45 – 20 cm</span>
+    <span style="background:#f1f5f9;padding:4px 12px;border-radius:6px;font-size:0.8rem;">③ Splitt 5–8 mm – 4 cm <span style="color:var(--text-muted);font-size:0.75rem;">oder</span> Drainagebeton 8–10 cm</span>
+    <span style="background:#dbeafe;color:var(--accent);padding:4px 12px;border-radius:6px;font-size:0.8rem;font-weight:600;">④ Plattenbelag – lose <span style="color:var(--text-muted);font-weight:400;">oder</span> fest</span>
+    <span style="background:#fef3c7;color:var(--amber);padding:4px 12px;border-radius:6px;font-size:0.8rem;">Gefälle: 1,5–2 % vom Haus weg</span>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<div class="footer">
+  Quellen: Florians Gartenwelt · Heter Naturstein · Kan Keramik · OBI<br>
+  Erstellt aus Video-Transkripten – ohne Gewähr.
+</div>
+
+<script>
+  lucide.createIcons();
+  function toggle(el) {
+    el.classList.toggle('open');
+    const body = el.nextElementSibling;
+    if (body) body.style.display = body.style.display === 'block' ? 'none' : 'block';
+  }
+  // Open all by default (already open via CSS class)
+</script>
+</body>
+</html>
